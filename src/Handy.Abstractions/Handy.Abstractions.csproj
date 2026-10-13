@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <!-- Brings Avalonia and Material.Icons along, so modules get the same versions as the host. -->
+    <PackageReference Include="KD.Avalonia.Rice" Version="$(RiceVersion)" />
+  </ItemGroup>
+</Project>

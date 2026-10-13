@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Handy.Modules.SystemInfo"
+             x:Class="Handy.Modules.SystemInfo.SystemInfoView"
+             x:DataType="local:SystemInfoViewModel">
+  <UserControl.Styles>
+    <Style Selector="TextBlock.label">
+      <Setter Property="Foreground" Value="{DynamicResource RiceForegroundMutedBrush}" />
+      <Setter Property="Margin" Value="0,0,24,0" />
+    </Style>
+  </UserControl.Styles>
+  <StackPanel Margin="24" Spacing="16">
+    <TextBlock Name="Heading" FontSize="24" FontWeight="SemiBold"
+               Text="{Binding [Title], Source={x:Static local:L.Instance}}" />
+    <Border HorizontalAlignment="Left" Padding="16" CornerRadius="8" BorderThickness="1"
+            Background="{DynamicResource RiceSurfaceBrush}" BorderBrush="{DynamicResource RiceBorderBrush}">
+      <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="8">
+        <TextBlock Grid.Row="0" Classes="label" Text="{Binding [OperatingSystem], Source={x:Static local:L.Instance}}" />
+        <SelectableTextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OperatingSystem}" />
+        <TextBlock Grid.Row="1" Classes="label" Text="{Binding [Architecture], Source={x:Static local:L.Instance}}" />
+        <SelectableTextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Architecture}" />
+        <TextBlock Grid.Row="2" Classes="label" Text="{Binding [Runtime], Source={x:Static local:L.Instance}}" />
+        <SelectableTextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Runtime}" />
+        <TextBlock Grid.Row="3" Classes="label" Text="{Binding [MachineName], Source={x:Static local:L.Instance}}" />
+        <SelectableTextBlock Grid.Row="3" Grid.Column="1" Text="{Binding MachineName}" />
+        <TextBlock Grid.Row="4" Classes="label" Text="{Binding [Processors], Source={x:Static local:L.Instance}}" />
+        <SelectableTextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Processors}" />
+        <TextBlock Grid.Row="5" Classes="label" Text="{Binding [Language], Source={x:Static local:L.Instance}}" />
+        <SelectableTextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Language}" />
+      </Grid>
+    </Border>
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Settings" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Általános</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Nyelv</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Téma</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Mégse</value>
+  </data>
+  <data name="NoModules" xml:space="preserve">
+    <value>Nincs telepített modul</value>
+  </data>
+  <data name="NoModulesHint" xml:space="preserve">
+    <value>Másolj egy modult ebbe a mappába, és megjelenik a menüben:</value>
+  </data>
+  <data name="ModuleViewError" xml:space="preserve">
+    <value>Ez a modul nem jeleníthető meg: {0}</value>
+  </data>
+  <data name="Rice_ToggleTheme" xml:space="preserve">
+    <value>Világos / Sötét</value>
+  </data>
+  <data name="Rice_About" xml:space="preserve">
+    <value>Névjegy</value>
+  </data>
+  <data name="Rice_Minimize" xml:space="preserve">
+    <value>Kis méret</value>
+  </data>
+  <data name="Rice_Maximize" xml:space="preserve">
+    <value>Teljes méret</value>
+  </data>
+  <data name="Rice_Restore" xml:space="preserve">
+    <value>Előző méret</value>
+  </data>
+  <data name="Rice_Close" xml:space="preserve">
+    <value>Bezárás</value>
+  </data>
+  <data name="Rice_Author" xml:space="preserve">
+    <value>Szerző</value>
+  </data>
+  <data name="Rice_Version" xml:space="preserve">
+    <value>Verzió</value>
+  </data>
+  <data name="Rice_LightVariant" xml:space="preserve">
+    <value>Világos</value>
+  </data>
+  <data name="Rice_DarkVariant" xml:space="preserve">
+    <value>Sötét</value>
+  </data>
+  <data name="Rice_CollapseMenu" xml:space="preserve">
+    <value>Menü összecsukása</value>
+  </data>
+  <data name="Rice_ExpandMenu" xml:space="preserve">
+    <value>Menü kinyitása</value>
+  </data>
+</root>

@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Handy.Modules.Notes"
+             x:Class="Handy.Modules.Notes.NotesView"
+             x:DataType="local:NotesViewModel">
+  <DockPanel Margin="24">
+    <TextBlock DockPanel.Dock="Top" Margin="0,0,0,12" FontSize="24" FontWeight="SemiBold"
+               Text="{Binding [Title], Source={x:Static local:L.Instance}}" />
+    <TextBlock DockPanel.Dock="Bottom" Margin="0,8,0,0" HorizontalAlignment="Right"
+               Foreground="{DynamicResource RiceForegroundMutedBrush}" Text="{Binding Summary}" />
+    <TextBox AcceptsReturn="True" VerticalContentAlignment="Top"
+             Text="{Binding Text}" FontSize="{Binding FontSize}" TextWrapping="{Binding Wrapping}"
+             PlaceholderText="{Binding [Placeholder], Source={x:Static local:L.Instance}}" />
+  </DockPanel>
+</UserControl>

@@ -1,0 +1,34 @@
+<rice:RiceWindow xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:rice="clr-namespace:KD.Avalonia.Rice.Controls;assembly=KD.Avalonia.Rice"
+                 xmlns:h="clr-namespace:Handy"
+                 xmlns:vm="clr-namespace:Handy.ViewModels"
+                 x:Class="Handy.Views.SettingsWindow"
+                 x:DataType="vm:SettingsViewModel"
+                 Title="{Binding [Settings], Source={x:Static h:L.Instance}}"
+                 Width="560" Height="600" MinWidth="420" MinHeight="360"
+                 CanMinimize="False" CanMaximize="False" ShowInTaskbar="False" ShowThemeToggle="False"
+                 WindowStartupLocation="CenterOwner">
+  <DockPanel Margin="16">
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right"
+                Spacing="8" Margin="0,16,0,0">
+      <Button Classes="accent" MinWidth="88" HorizontalContentAlignment="Center" IsDefault="True"
+              Content="{Binding [Ok], Source={x:Static h:L.Instance}}" Click="OnOkClicked" />
+      <Button MinWidth="88" HorizontalContentAlignment="Center" IsCancel="True"
+              Content="{Binding [Cancel], Source={x:Static h:L.Instance}}" Click="OnCancelClicked" />
+    </StackPanel>
+
+    <TabControl Name="Tabs" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+      <TabControl.ItemTemplate>
+        <DataTemplate x:DataType="vm:SettingsTabViewModel">
+          <TextBlock Text="{Binding Title}" />
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <TabControl.ContentTemplate>
+        <DataTemplate x:DataType="vm:SettingsTabViewModel">
+          <ContentControl Content="{Binding View}" />
+        </DataTemplate>
+      </TabControl.ContentTemplate>
+    </TabControl>
+  </DockPanel>
+</rice:RiceWindow>

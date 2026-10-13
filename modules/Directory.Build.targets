@@ -1,0 +1,12 @@
+<Project>
+  <!-- Every module is deployed into the host's Modules folder, each into a folder of its own. -->
+  <PropertyGroup>
+    <HandyModuleDeployDir>$(MSBuildThisFileDirectory)..\src\Handy\bin\$(Configuration)\$(TargetFramework)\Modules\$(AssemblyName)\</HandyModuleDeployDir>
+  </PropertyGroup>
+  <Target Name="DeployHandyModule" AfterTargets="Build">
+    <ItemGroup>
+      <HandyModuleFile Include="$(OutDir)**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(HandyModuleFile)" DestinationFolder="$(HandyModuleDeployDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

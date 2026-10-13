@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <!-- Provided by the host at runtime, so it must not be copied next to the module. -->
+    <ProjectReference Include="..\..\src\Handy.Abstractions\Handy.Abstractions.csproj" Private="false" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="$(MvvmToolkitVersion)" />
+  </ItemGroup>
+</Project>

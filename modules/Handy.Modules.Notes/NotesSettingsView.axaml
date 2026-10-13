@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Handy.Modules.Notes"
+             x:Class="Handy.Modules.Notes.NotesSettingsView"
+             x:DataType="local:NotesSettingsPage">
+  <StackPanel Margin="0,12,0,0" Spacing="8">
+    <TextBlock FontWeight="SemiBold" Text="{Binding [FontSize], Source={x:Static local:L.Instance}}" />
+    <DockPanel>
+      <TextBlock DockPanel.Dock="Right" Width="32" VerticalAlignment="Center" TextAlignment="Right"
+                 Text="{Binding FontSize, StringFormat={}{0:0}}" />
+      <Slider Minimum="10" Maximum="28" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding FontSize}" />
+    </DockPanel>
+    <CheckBox Margin="0,8,0,0" IsChecked="{Binding WrapText}"
+              Content="{Binding [WrapText], Source={x:Static local:L.Instance}}" />
+  </StackPanel>
+</UserControl>

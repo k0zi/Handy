@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Handy\Handy.csproj" />
+    <!-- Build order only: the modules are loaded from TestModules, like the host loads them from Modules. -->
+    <ProjectReference Include="..\..\modules\Handy.Modules.Notes\Handy.Modules.Notes.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\modules\Handy.Modules.SystemInfo\Handy.Modules.SystemInfo.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <Target Name="CopyTestModules" AfterTargets="Build">
+    <ItemGroup>
+      <TestModuleFile Include="..\..\src\Handy\bin\$(Configuration)\$(TargetFramework)\Modules\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(TestModuleFile)" DestinationFolder="$(OutDir)TestModules\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

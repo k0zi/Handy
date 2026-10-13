@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Handy.Abstractions/Handy.Abstractions.csproj" />
+    <Project Path="src/Handy/Handy.csproj" />
+  </Folder>
+  <Folder Name="/modules/">
+    <Project Path="modules/Handy.Modules.Notes/Handy.Modules.Notes.csproj" />
+    <Project Path="modules/Handy.Modules.SystemInfo/Handy.Modules.SystemInfo.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Handy.Tests/Handy.Tests.csproj" />
+  </Folder>
+</Solution>

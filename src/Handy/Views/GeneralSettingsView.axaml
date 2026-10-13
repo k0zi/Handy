@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rice="clr-namespace:KD.Avalonia.Rice.Controls;assembly=KD.Avalonia.Rice"
+             xmlns:globalization="clr-namespace:System.Globalization;assembly=System.Runtime"
+             xmlns:h="clr-namespace:Handy"
+             xmlns:vm="clr-namespace:Handy.ViewModels"
+             x:Class="Handy.Views.GeneralSettingsView"
+             x:DataType="vm:SettingsViewModel">
+  <DockPanel Margin="0,12,0,0">
+    <StackPanel DockPanel.Dock="Top" Spacing="8">
+      <TextBlock FontWeight="SemiBold" Text="{Binding [Language], Source={x:Static h:L.Instance}}" />
+      <ComboBox Name="LanguageBox" MinWidth="220"
+                ItemsSource="{Binding Cultures}" SelectedItem="{Binding SelectedCulture}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="globalization:CultureInfo">
+            <TextBlock Text="{Binding NativeName}" />
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      <TextBlock Margin="0,12,0,0" FontWeight="SemiBold"
+                 Text="{Binding [Theme], Source={x:Static h:L.Instance}}" />
+    </StackPanel>
+    <rice:ThemeSelector />
+  </DockPanel>
+</UserControl>
