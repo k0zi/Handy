@@ -26,7 +26,7 @@ internal static class Program
             AppId = AppPaths.AppId,
             Name = "Handy",
             Author = "k0zi",
-            IconUri = "avares://Handy/Assets/handy.png",
+            IconUri = "avares://Handy/Assets/icon.png",
         };
         options.SupportedThemes = BuiltInThemes.All;
         options.DefaultThemeId = BuiltInThemes.Ubuntu.Id;
