@@ -7,7 +7,7 @@ using Handy.Views;
 
 namespace Handy.ViewModels;
 
-/// <summary>One tab of the settings window.</summary>
+/// <summary>One tab of the settings page.</summary>
 internal sealed class SettingsTabViewModel(Func<string> title, Control view, IModuleSettingsPage? page = null)
     : ObservableObject
 {

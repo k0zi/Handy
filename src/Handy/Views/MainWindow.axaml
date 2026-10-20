@@ -3,12 +3,13 @@
                  xmlns:rice="clr-namespace:KD.Avalonia.Rice.Controls;assembly=KD.Avalonia.Rice"
                  xmlns:h="clr-namespace:Handy"
                  xmlns:vm="clr-namespace:Handy.ViewModels"
+                 xmlns:v="clr-namespace:Handy.Views"
+                 xmlns:icons="clr-namespace:Material.Icons;assembly=Material.Icons"
                  x:Class="Handy.Views.MainWindow"
                  x:DataType="vm:MainWindowViewModel"
                  Width="1000" Height="640" MinWidth="640" MinHeight="400"
                  WindowStartupLocation="CenterScreen"
-                 ShowSettingsButton="True" ShowAboutButton="True"
-                 SettingsRequested="OnSettingsRequested">
+                 ShowAboutButton="True">
   <DockPanel>
     <rice:RiceSideMenu Name="SideMenu" DockPanel.Dock="Left"
                        ItemsSource="{Binding Modules}" SelectedItem="{Binding SelectedModule}">
@@ -16,17 +17,30 @@
         <TextBlock FontWeight="SemiBold" Text="Handy" TextTrimming="CharacterEllipsis" />
       </rice:RiceSideMenu.Header>
       <rice:RiceSideMenu.Styles>
-        <Style Selector="rice|RiceSideMenuItem" x:DataType="vm:ModuleMenuItemViewModel">
+        <Style Selector="rice|RiceSideMenuItem:not(.footer)" x:DataType="vm:ModuleMenuItemViewModel">
           <Setter Property="Icon" Value="{Binding Icon}" />
           <Setter Property="Content" Value="{Binding Title}" />
         </Style>
       </rice:RiceSideMenu.Styles>
+      <rice:RiceSideMenu.Footer>
+        <rice:RiceSideMenuItem Name="SettingsItem" Classes="footer"
+                               Icon="{x:Static icons:MaterialIconKind.CogOutline}"
+                               Content="{Binding [Settings], Source={x:Static h:L.Instance}}"
+                               Command="{Binding OpenSettingsCommand}" />
+      </rice:RiceSideMenu.Footer>
     </rice:RiceSideMenu>
 
     <Panel>
       <ContentControl Name="ModuleView" Content="{Binding SelectedModule.View}" />
-      <StackPanel Name="EmptyState" IsVisible="{Binding !Modules.Count}" Spacing="8"
+      <v:SettingsView Name="SettingsView" IsVisible="{Binding Settings, Converter={x:Static ObjectConverters.IsNotNull}}" />
+      <StackPanel Name="EmptyState" Spacing="8"
                   HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel.IsVisible>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="!Modules.Count" />
+            <Binding Path="Settings" Converter="{x:Static ObjectConverters.IsNull}" />
+          </MultiBinding>
+        </StackPanel.IsVisible>
         <TextBlock HorizontalAlignment="Center" FontSize="20" FontWeight="SemiBold"
                    Text="{Binding [NoModules], Source={x:Static h:L.Instance}}" />
         <TextBlock HorizontalAlignment="Center" Foreground="{DynamicResource RiceForegroundMutedBrush}"

@@ -30,8 +30,8 @@ public interface IHandyModule
     Control CreateView();
 
     /// <summary>
-    /// Creates the module's page for the settings window, or <c>null</c> when the module has no settings.
-    /// Called every time the settings window opens.
+    /// Creates the module's page for the settings, or <c>null</c> when the module has no settings.
+    /// Called every time the settings page opens.
     /// </summary>
     IModuleSettingsPage? CreateSettingsPage() => null;
 }

@@ -5,7 +5,7 @@
 # Handy
 
 An open source, modular desktop toolbox built with [Avalonia](https://avaloniaui.net/). The application itself is
-only a shell: a window with a side menu, a settings dialog, themes and languages. Everything you actually use in it is
+only a shell: a window with a side menu, a settings page, themes and languages. Everything you actually use in it is
 a **module**, a plugin assembly dropped into the `Modules` folder.
 
 - **Drop-in modules** – every module adds one menu item and one view, plus an optional settings page.
@@ -40,7 +40,7 @@ dotnet test
 
 | Path | Content |
 | --- | --- |
-| `src/Handy` | The host application: main window, settings window, module loader. |
+| `src/Handy` | The host application: main window, settings page, module loader. |
 | `src/Handy.Abstractions` | The contract between the host and the modules (`IHandyModule` and friends). |
 | `modules/` | The modules. `Handy.Modules.Notes` and `Handy.Modules.SystemInfo` are samples. |
 | `tests/Handy.Tests` | Headless UI tests of the host with the sample modules. |

@@ -1,7 +1,7 @@
 # Developing a module
 
 A Handy module is a .NET class library that adds **one menu item and one view** to the application, and optionally
-**one tab to the settings window**. This guide builds a module from scratch; the two sample modules in `modules/` show
+**one tab to the settings page**. This guide builds a module from scratch; the two sample modules in `modules/` show
 the same things in working code:
 
 - [`Handy.Modules.SystemInfo`](../modules/Handy.Modules.SystemInfo) – the minimum: a view and localized texts.
@@ -56,7 +56,7 @@ The lifecycle of a module instance:
 | `Title` | When the menu is built and again after every language change. |
 | `Icon` | When the menu item is created. |
 | `CreateView()` | Once, the first time the menu item is selected. The view is then kept. |
-| `CreateSettingsPage()` | Every time the settings window opens. |
+| `CreateSettingsPage()` | Every time the settings page opens. |
 
 Everything is called on the UI thread. An exception thrown from `Initialize` means the module is not loaded; one thrown
 from `CreateView` is shown in place of the view; one from `CreateSettingsPage` only loses the settings tab. In every
@@ -306,7 +306,7 @@ change is finished rather than on every step.
 ## 6. Add a settings page
 
 A module that has something to configure returns an `IModuleSettingsPage` from `CreateSettingsPage`. The host shows it
-as a tab in the settings window, after its own *General* tab.
+as a tab on the settings page, after its own *General* tab.
 
 ```csharp
 public interface IModuleSettingsPage
@@ -317,9 +317,9 @@ public interface IModuleSettingsPage
 }
 ```
 
-The settings window has **OK** and **Cancel**, so a page has to work on a copy: it reads the current values when it is
+The settings page has **OK** and **Cancel** (choosing a module in the menu counts as Cancel), so a page has to work on a copy: it reads the current values when it is
 created, the user edits the copy, and `Save` applies it. On cancel the page is simply dropped. `CreateSettingsPage` is
-called every time the window opens, which makes this easy — a new page starts from the current values.
+called every time the settings page opens, which makes this easy — a new page starts from the current values.
 
 Say the view model gets a `Shout` property, loaded and stored exactly like `Name`, that makes the greeting upper
 case. Its settings page:

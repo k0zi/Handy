@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:h="clr-namespace:Handy"
+             xmlns:vm="clr-namespace:Handy.ViewModels"
+             x:Class="Handy.Views.SettingsView"
+             x:DataType="vm:MainWindowViewModel">
+  <DockPanel Margin="16">
+    <TextBlock Name="Heading" DockPanel.Dock="Top" Margin="0,0,0,12" FontSize="20" FontWeight="SemiBold"
+               Text="{Binding [Settings], Source={x:Static h:L.Instance}}" />
+
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right"
+                Spacing="8" Margin="0,16,0,0">
+      <Button Name="OkButton" Classes="accent" MinWidth="88" HorizontalContentAlignment="Center"
+              Content="{Binding [Ok], Source={x:Static h:L.Instance}}" Command="{Binding SaveSettingsCommand}" />
+      <Button Name="CancelButton" MinWidth="88" HorizontalContentAlignment="Center" IsCancel="True"
+              Content="{Binding [Cancel], Source={x:Static h:L.Instance}}" Command="{Binding CancelSettingsCommand}" />
+    </StackPanel>
+
+    <TabControl Name="Tabs" ItemsSource="{Binding Settings.Tabs}" SelectedItem="{Binding Settings.SelectedTab}">
+      <TabControl.ItemTemplate>
+        <DataTemplate x:DataType="vm:SettingsTabViewModel">
+          <TextBlock Text="{Binding Title}" />
+        </DataTemplate>
+      </TabControl.ItemTemplate>
+      <TabControl.ContentTemplate>
+        <DataTemplate x:DataType="vm:SettingsTabViewModel">
+          <ContentControl Content="{Binding View}" />
+        </DataTemplate>
+      </TabControl.ContentTemplate>
+    </TabControl>
+  </DockPanel>
+</UserControl>

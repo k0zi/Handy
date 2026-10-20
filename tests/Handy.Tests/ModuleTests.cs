@@ -64,6 +64,8 @@ public class ModuleTests
         var menu = window.FindControl<RiceSideMenu>("SideMenu")!;
 
         Assert.Equal(["Notes", "System info"], MenuTexts(menu));
+        var settingsItem = window.FindControl<RiceSideMenuItem>("SettingsItem")!;
+        Assert.Equal("Settings", settingsItem.Content);
         Assert.Contains(window.GetVisualDescendants(), c => c.GetType().Name == "NotesView");
         Assert.False(window.FindControl<StackPanel>("EmptyState")!.IsVisible);
 
@@ -72,6 +74,7 @@ public class ModuleTests
         Dispatcher.UIThread.RunJobs();
 
         Assert.Equal(["Jegyzetek", "Rendszerinformáció"], MenuTexts(menu));
+        Assert.Equal("Beállítások", settingsItem.Content);
         var view = window.GetVisualDescendants().OfType<UserControl>().Single(c => c.GetType().Name == "SystemInfoView");
         Assert.Equal("Rendszerinformáció", view.FindControl<TextBlock>("Heading")!.Text);
         window.Close();
@@ -110,22 +113,58 @@ public class ModuleTests
     }
 
     [AvaloniaFact]
-    public void Settings_window_has_a_tab_for_modules_with_a_settings_page_only()
+    public void Settings_have_a_tab_for_modules_with_a_settings_page_only()
     {
         using var host = new TestHost(Notes, SystemInfo);
         host.Services.Modules.LoadNewModules();
-        var settings = new MainWindowViewModel(host.Services).CreateSettings();
-        var window = new SettingsWindow(settings);
+        var viewModel = new MainWindowViewModel(host.Services);
+        var window = new MainWindow { DataContext = viewModel };
         window.Show();
+        viewModel.OpenSettingsCommand.Execute(null);
+        Dispatcher.UIThread.RunJobs();
+        var view = window.FindControl<SettingsView>("SettingsView")!;
+
+        Assert.Equal(["General", "Notes"], TabTexts(view));
+
+        viewModel.Settings!.SelectedCulture = Hungarian;
         Dispatcher.UIThread.RunJobs();
 
-        Assert.Equal(["General", "Notes"], TabTexts(window));
+        Assert.Equal(["Általános", "Jegyzetek"], TabTexts(view));
+        Assert.Equal("Beállítások", view.FindControl<TextBlock>("Heading")!.Text);
+        window.Close();
+    }
 
-        settings.SelectedCulture = Hungarian;
+    [AvaloniaFact]
+    public void Settings_open_in_place_of_the_module_and_close_back_to_it()
+    {
+        using var host = new TestHost(Notes, SystemInfo);
+        host.Services.Modules.LoadNewModules();
+        var viewModel = new MainWindowViewModel(host.Services);
+        var window = new MainWindow { DataContext = viewModel };
+        window.Show();
+        viewModel.SelectedModule = viewModel.Modules[1];
+        Dispatcher.UIThread.RunJobs();
+        var settingsView = window.FindControl<SettingsView>("SettingsView")!;
+        Assert.False(settingsView.IsVisible);
+
+        window.FindControl<RiceSideMenuItem>("SettingsItem")!.Command!.Execute(null);
         Dispatcher.UIThread.RunJobs();
 
-        Assert.Equal(["Általános", "Jegyzetek"], TabTexts(window));
-        Assert.Equal("Beállítások", window.Title);
+        Assert.True(settingsView.IsVisible);
+        Assert.Null(viewModel.SelectedModule);
+
+        viewModel.CancelSettingsCommand.Execute(null);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.False(settingsView.IsVisible);
+        Assert.Same(viewModel.Modules[1], viewModel.SelectedModule);
+
+        viewModel.OpenSettingsCommand.Execute(null);
+        viewModel.SelectedModule = viewModel.Modules[0];
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Null(viewModel.Settings);
+        Assert.False(settingsView.IsVisible);
         window.Close();
     }
 
@@ -154,9 +193,9 @@ public class ModuleTests
     }
 
     private static IEnumerable<object?> MenuTexts(RiceSideMenu menu) =>
-        menu.GetVisualDescendants().OfType<RiceSideMenuItem>().Select(item => item.Content);
+        menu.GetRealizedContainers().OfType<RiceSideMenuItem>().Select(item => item.Content);
 
-    private static IEnumerable<string?> TabTexts(SettingsWindow window) =>
-        window.FindControl<TabControl>("Tabs")!.GetVisualDescendants().OfType<TabItem>()
+    private static IEnumerable<string?> TabTexts(SettingsView view) =>
+        view.FindControl<TabControl>("Tabs")!.GetVisualDescendants().OfType<TabItem>()
             .Select(tab => tab.GetVisualDescendants().OfType<TextBlock>().First().Text);
 }
