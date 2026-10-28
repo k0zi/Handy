@@ -24,7 +24,11 @@ the same things in working code:
 
 ## How modules work
 
-The host looks for module assemblies in the `Modules` folder next to its executable:
+The host looks for module assemblies in two `Modules` folders: the user's own, `~/.local/share/handy/Modules` on
+Linux (`%LOCALAPPDATA%\handy\Modules` on Windows, `~/Library/Application Support/handy/Modules` on macOS), and
+the one next to its executable. An installed Handy (e.g. the Linux packages in `/usr/lib/handy`) cannot write the
+second one, so install modules into the first. With the same module id in both, the user's folder wins. The layout
+is the same in both:
 
 ```
 Handy
@@ -437,7 +441,9 @@ project normally.
 
 ## Distributing a module
 
-A built module is a folder; installing it means copying that folder into `Modules` next to the Handy executable.
+A built module is a folder; installing it means copying that folder into the user's modules folder
+(`~/.local/share/handy/Modules` on Linux, see [How modules work](#how-modules-work)). The empty main window of Handy
+shows the path.
 
 ```bash
 dotnet build modules/Handy.Modules.Hello -c Release
@@ -452,6 +458,53 @@ the host's `Modules/Handy.Modules.Hello/`):
 - the `.pdb` is optional
 
 The folder must be called `Handy.Modules.Hello`, like the assembly in it.
+
+### As a NuGet package
+
+Handy can install modules itself, from the module sources set on the **Modules** tab of the settings: a folder of
+`.nupkg` files (flat, or the `<id>/<version>/` layout of a local NuGet feed) or a NuGet v3 feed URL (nuget.org,
+GitHub Packages, Azure Artifacts, BaGet, …). A module package is a `.nupkg` with
+
+- the package type `HandyModule` (feeds are searched with `packageType=HandyModule`, other packages are ignored),
+- the module folder in `lib/net10.0/`: `<id>.dll`, so **the package id must be the assembly name**, its
+  `deps.json`, the language folders and the private dependencies,
+- no NuGet dependencies: Handy does not resolve them, everything the module needs is in `lib/`.
+
+Handy unpacks `lib/net10.0/` into `Modules/<id>/` of the user's modules folder and loads it right away. Updating or
+uninstalling a module that is already there is done on the next start, because loaded modules cannot be unloaded.
+
+`dotnet pack` makes such a package with these additions to the module's project:
+
+```xml
+<PropertyGroup>
+  <Version>1.0.0</Version>
+  <Authors>Your name</Authors>
+  <Description>What the module does; shown in the module list.</Description>
+  <PackageType>HandyModule</PackageType>
+  <!-- Everything the module needs is in the package, so it has no NuGet dependencies. -->
+  <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  <NoWarn>$(NoWarn);NU5128</NoWarn>
+  <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);PackModuleFolder</TargetsForTfmSpecificBuildOutput>
+</PropertyGroup>
+<!-- Packs the whole build output (deps.json, private dependencies) next to the module assembly. The assembly and
+     the language folders are packed by default. -->
+<Target Name="PackModuleFolder">
+  <ItemGroup>
+    <BuildOutputInPackage Include="$(OutDir)**\*"
+                          Exclude="$(OutDir)$(TargetFileName);$(OutDir)**\*.resources.dll;$(OutDir)**\*.pdb"
+                          TargetPath="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+</Target>
+```
+
+```bash
+dotnet pack modules/Handy.Modules.Hello -c Release -o artifacts/modules
+```
+
+Copy the `.nupkg` into a folder that is a module source, or push it to a feed
+(`dotnet nuget push <file> --source <feed> --api-key <key>`).
+
+### Compatibility
 
 A module developed outside this repository needs the same three things the repository gives for free: a reference to
 `Handy.Abstractions` that is not copied to the output, the same target framework and Avalonia version as the Handy

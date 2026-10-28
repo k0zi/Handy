@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Handy
+Comment=Modular desktop toolbox
+Exec=@BIN@
+Icon=handy
+Terminal=false
+Categories=Utility;
+StartupWMClass=Handy

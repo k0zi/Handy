@@ -10,4 +10,8 @@
     <RiceVersion>26.10.6</RiceVersion>
     <MvvmToolkitVersion>8.4.2</MvvmToolkitVersion>
   </PropertyGroup>
+  <!-- Version numbers come from version.json (major = year, minor = month) plus the git height as patch, e.g. 26.10.3. -->
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.10.94" PrivateAssets="all" />
+  </ItemGroup>
 </Project>

@@ -21,15 +21,22 @@ internal sealed class SettingsTabViewModel(Func<string> title, Control view, IMo
     public void RefreshTitle() => OnPropertyChanged(nameof(Title));
 }
 
-/// <summary>The "General" tab followed by one tab for every module that has a settings page.</summary>
+/// <summary>The "General" and "Modules" tabs followed by one tab for every module that has a settings page.</summary>
 internal sealed class SettingsViewModel : ObservableObject, IDisposable
 {
     private readonly ILocalizationService _localization;
+    private readonly ModuleManagerViewModel _moduleManager;
 
-    public SettingsViewModel(ILocalizationService localization, IEnumerable<IHandyModule> modules)
+    public SettingsViewModel(ILocalizationService localization, IEnumerable<IHandyModule> modules,
+        ModuleManagerViewModel moduleManager)
     {
         _localization = localization;
-        Tabs = [new SettingsTabViewModel(() => L.Instance["General"], new GeneralSettingsView { DataContext = this })];
+        _moduleManager = moduleManager;
+        Tabs =
+        [
+            new SettingsTabViewModel(() => L.Instance["General"], new GeneralSettingsView { DataContext = this }),
+            new SettingsTabViewModel(() => L.Instance["Modules"], new ModuleManagerView { DataContext = moduleManager }),
+        ];
         foreach (var module in modules)
         {
             if (TryCreateTab(module) is { } tab)
@@ -78,7 +85,11 @@ internal sealed class SettingsViewModel : ObservableObject, IDisposable
         }
     }
 
-    public void Dispose() => _localization.CultureChanged -= OnCultureChanged;
+    public void Dispose()
+    {
+        _localization.CultureChanged -= OnCultureChanged;
+        _moduleManager.Dispose();
+    }
 
     private void OnCultureChanged(object? sender, EventArgs e)
     {

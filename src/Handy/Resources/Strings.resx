@@ -75,4 +75,76 @@
   <data name="Rice_ExpandMenu" xml:space="preserve">
     <value>Expand menu</value>
   </data>
+  <data name="Modules" xml:space="preserve">
+    <value>Modules</value>
+  </data>
+  <data name="ModuleTrustWarning" xml:space="preserve">
+    <value>Modules run with the full rights of Handy. Only install modules from sources you trust.</value>
+  </data>
+  <data name="ModuleSources" xml:space="preserve">
+    <value>Module sources</value>
+  </data>
+  <data name="ModuleSourceHint" xml:space="preserve">
+    <value>Folder with .nupkg files or NuGet feed URL, e.g. https://api.nuget.org/v3/index.json</value>
+  </data>
+  <data name="AddModuleSource" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="RemoveModuleSource" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="InvalidModuleSource" xml:space="preserve">
+    <value>Enter a NuGet feed URL (http or https) or the full path of a folder that is not in the list yet.</value>
+  </data>
+  <data name="AvailableModules" xml:space="preserve">
+    <value>Available modules</value>
+  </data>
+  <data name="SearchModules" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchModulesHint" xml:space="preserve">
+    <value>Module name (empty: all modules)</value>
+  </data>
+  <data name="NoModuleSources" xml:space="preserve">
+    <value>Add a module source first.</value>
+  </data>
+  <data name="NoModulesFound" xml:space="preserve">
+    <value>No modules found.</value>
+  </data>
+  <data name="ModuleSourceError" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="InstallModule" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="UpdateModule" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="ModuleUpToDate" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="RestartRequired" xml:space="preserve">
+    <value>Restart Handy to apply</value>
+  </data>
+  <data name="ModuleInstalled" xml:space="preserve">
+    <value>{0} {1} is installed.</value>
+  </data>
+  <data name="ModuleInstalledAfterRestart" xml:space="preserve">
+    <value>{0} {1} will be installed when Handy restarts.</value>
+  </data>
+  <data name="ModuleInstallFailed" xml:space="preserve">
+    <value>Could not install {0}: {1}</value>
+  </data>
+  <data name="ModuleRemovedAfterRestart" xml:space="preserve">
+    <value>{0} will be removed when Handy restarts.</value>
+  </data>
+  <data name="InstalledModules" xml:space="preserve">
+    <value>Installed modules</value>
+  </data>
+  <data name="NoInstalledModules" xml:space="preserve">
+    <value>No modules installed from a source yet.</value>
+  </data>
+  <data name="UninstallModule" xml:space="preserve">
+    <value>Uninstall</value>
+  </data>
 </root>

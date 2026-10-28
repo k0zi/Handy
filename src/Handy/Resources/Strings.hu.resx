@@ -75,4 +75,76 @@
   <data name="Rice_ExpandMenu" xml:space="preserve">
     <value>Menü kinyitása</value>
   </data>
+  <data name="Modules" xml:space="preserve">
+    <value>Modulok</value>
+  </data>
+  <data name="ModuleTrustWarning" xml:space="preserve">
+    <value>A modulok a Handy teljes jogaival futnak. Csak megbízható forrásból telepíts modult.</value>
+  </data>
+  <data name="ModuleSources" xml:space="preserve">
+    <value>Modulforrások</value>
+  </data>
+  <data name="ModuleSourceHint" xml:space="preserve">
+    <value>.nupkg fájlokat tartalmazó mappa vagy NuGet feed URL, pl. https://api.nuget.org/v3/index.json</value>
+  </data>
+  <data name="AddModuleSource" xml:space="preserve">
+    <value>Hozzáadás</value>
+  </data>
+  <data name="RemoveModuleSource" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="InvalidModuleSource" xml:space="preserve">
+    <value>Adj meg egy NuGet feed URL-t (http vagy https) vagy egy mappa teljes elérési útját, ami még nincs a listában.</value>
+  </data>
+  <data name="AvailableModules" xml:space="preserve">
+    <value>Elérhető modulok</value>
+  </data>
+  <data name="SearchModules" xml:space="preserve">
+    <value>Keresés</value>
+  </data>
+  <data name="SearchModulesHint" xml:space="preserve">
+    <value>Modul neve (üresen: minden modul)</value>
+  </data>
+  <data name="NoModuleSources" xml:space="preserve">
+    <value>Előbb adj hozzá egy modulforrást.</value>
+  </data>
+  <data name="NoModulesFound" xml:space="preserve">
+    <value>Nincs ilyen modul.</value>
+  </data>
+  <data name="ModuleSourceError" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="InstallModule" xml:space="preserve">
+    <value>Telepítés</value>
+  </data>
+  <data name="UpdateModule" xml:space="preserve">
+    <value>Frissítés</value>
+  </data>
+  <data name="ModuleUpToDate" xml:space="preserve">
+    <value>Telepítve</value>
+  </data>
+  <data name="RestartRequired" xml:space="preserve">
+    <value>Újraindítás után érvényes</value>
+  </data>
+  <data name="ModuleInstalled" xml:space="preserve">
+    <value>{0} {1} telepítve.</value>
+  </data>
+  <data name="ModuleInstalledAfterRestart" xml:space="preserve">
+    <value>{0} {1} a Handy újraindításakor települ.</value>
+  </data>
+  <data name="ModuleInstallFailed" xml:space="preserve">
+    <value>{0} telepítése nem sikerült: {1}</value>
+  </data>
+  <data name="ModuleRemovedAfterRestart" xml:space="preserve">
+    <value>{0} a Handy újraindításakor törlődik.</value>
+  </data>
+  <data name="InstalledModules" xml:space="preserve">
+    <value>Telepített modulok</value>
+  </data>
+  <data name="NoInstalledModules" xml:space="preserve">
+    <value>Még nincs forrásból telepített modul.</value>
+  </data>
+  <data name="UninstallModule" xml:space="preserve">
+    <value>Eltávolítás</value>
+  </data>
 </root>

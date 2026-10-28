@@ -30,6 +30,18 @@ public class ModuleTests
     }
 
     [AvaloniaFact]
+    public void Modules_are_loaded_from_the_user_and_the_bundled_folder()
+    {
+        using var host = new TestHost(SystemInfo);
+        host.Install(Notes, host.BundledModulesDirectory);
+
+        host.Services.Modules.LoadNewModules();
+
+        Assert.Equal(["handy.notes", "handy.system-info"], host.Services.Modules.Modules.Select(m => m.Id));
+        Assert.Equal(host.ModulesDirectory, host.Services.Modules.ModulesDirectory);
+    }
+
+    [AvaloniaFact]
     public void A_broken_assembly_does_not_stop_the_other_modules()
     {
         using var host = new TestHost(Notes);
@@ -124,12 +136,12 @@ public class ModuleTests
         Dispatcher.UIThread.RunJobs();
         var view = window.FindControl<SettingsView>("SettingsView")!;
 
-        Assert.Equal(["General", "Notes"], TabTexts(view));
+        Assert.Equal(["General", "Modules", "Notes"], TabTexts(view));
 
         viewModel.Settings!.SelectedCulture = Hungarian;
         Dispatcher.UIThread.RunJobs();
 
-        Assert.Equal(["Általános", "Jegyzetek"], TabTexts(view));
+        Assert.Equal(["Általános", "Modulok", "Jegyzetek"], TabTexts(view));
         Assert.Equal("Beállítások", view.FindControl<TextBlock>("Heading")!.Text);
         window.Close();
     }
@@ -188,7 +200,7 @@ public class ModuleTests
     private static void SetFontSize(SettingsViewModel settings, double fontSize)
     {
         // The page type lives in the module's own load context, so it is only reachable by reflection.
-        var page = settings.Tabs[1].Page!;
+        var page = settings.Tabs.First(tab => tab.Page is not null).Page!;
         page.GetType().GetProperty("FontSize")!.SetValue(page, fontSize);
     }
 
