@@ -16,6 +16,11 @@
     <ProjectReference Include="..\Handy.Abstractions\Handy.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <!-- The own license and the third-party notices travel with the binaries (see THIRD_PARTY_NOTICES.md). -->
+    <None Include="..\..\LICENSE;..\..\THIRD_PARTY_NOTICES.md" CopyToPublishDirectory="PreserveNewest" Visible="false" />
+    <None Include="..\..\licenses\**" LinkBase="licenses" CopyToPublishDirectory="PreserveNewest" Visible="false" />
+  </ItemGroup>
+  <ItemGroup>
     <InternalsVisibleTo Include="Handy.Tests" />
   </ItemGroup>
 </Project>

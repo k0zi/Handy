@@ -79,4 +79,10 @@ The full guide, with views, localization, settings and deployment, is in
 
 ## License
 
-[MIT](LICENSE)
+Handy is licensed under the [MIT license](LICENSE). Its builds also redistribute third-party components (.NET runtime,
+Avalonia, SkiaSharp, the Inter font, Material Design Icons, …) under their own licenses; see
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the `licenses/` directory. `dotnet publish` copies `LICENSE`,
+`THIRD_PARTY_NOTICES.md` and `licenses/` next to the binaries.
+
+Theme names such as Ubuntu, Fedora, Nord or Dracula only name the palette inspiration; Handy is not affiliated with
+or endorsed by those projects.
