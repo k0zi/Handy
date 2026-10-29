@@ -6,27 +6,30 @@ using Handy.Abstractions;
 namespace Handy.Services;
 
 /// <summary>
-/// Loads the modules found in the modules folder and keeps watching it, so a module copied there while the
+/// Loads the modules found in the modules folders and keeps watching them, so a module copied there while the
 /// application runs shows up as well. Modules are never unloaded: removing or replacing one needs a restart.
+/// The first folder is the user's own and is created when missing; the others (e.g. the modules shipped next to the
+/// executable, read-only when installed) are only read when they exist. With equal ids, the first folder wins.
 /// </summary>
-internal sealed class ModuleHost(string modulesDirectory, Func<IHandyModule, IModuleContext> createContext) : IDisposable
+internal sealed class ModuleHost(IReadOnlyList<string> modulesDirectories, Func<IHandyModule, IModuleContext> createContext) : IDisposable
 {
     private static readonly TimeSpan WatchDelay = TimeSpan.FromMilliseconds(500);
 
     private readonly HashSet<string> _loadedAssemblies = [];
-    private FileSystemWatcher? _watcher;
+    private readonly List<FileSystemWatcher> _watchers = [];
     private Timer? _watchTimer;
 
     /// <summary>Loaded modules in menu order. Changes on the UI thread only.</summary>
     public ObservableCollection<IHandyModule> Modules { get; } = [];
 
-    public string ModulesDirectory => modulesDirectory;
+    /// <summary>Where the user installs modules.</summary>
+    public string ModulesDirectory => modulesDirectories[0];
 
     /// <summary>Loads every module assembly that is not loaded yet. Call on the UI thread.</summary>
     public void LoadNewModules()
     {
-        Directory.CreateDirectory(modulesDirectory);
-        foreach (var path in FindModuleAssemblies())
+        Directory.CreateDirectory(ModulesDirectory);
+        foreach (var path in modulesDirectories.Where(Directory.Exists).SelectMany(FindModuleAssemblies))
         {
             // A failed assembly (e.g. still being copied) is tried again on the next change of the folder.
             if (!_loadedAssemblies.Contains(path) && TryLoadAssembly(path))
@@ -36,19 +39,24 @@ internal sealed class ModuleHost(string modulesDirectory, Func<IHandyModule, IMo
 
     public void StartWatching()
     {
-        Directory.CreateDirectory(modulesDirectory);
+        Directory.CreateDirectory(ModulesDirectory);
         _watchTimer = new Timer(_ => Dispatcher.UIThread.Post(LoadNewModules));
-        // No file filter: a module folder moved into place only raises an event for the folder itself.
-        _watcher = new FileSystemWatcher(modulesDirectory) { IncludeSubdirectories = true };
-        _watcher.Created += OnModulesDirectoryChanged;
-        _watcher.Changed += OnModulesDirectoryChanged;
-        _watcher.Renamed += OnModulesDirectoryChanged;
-        _watcher.EnableRaisingEvents = true;
+        foreach (var directory in modulesDirectories.Where(Directory.Exists))
+        {
+            // No file filter: a module folder moved into place only raises an event for the folder itself.
+            var watcher = new FileSystemWatcher(directory) { IncludeSubdirectories = true };
+            watcher.Created += OnModulesDirectoryChanged;
+            watcher.Changed += OnModulesDirectoryChanged;
+            watcher.Renamed += OnModulesDirectoryChanged;
+            watcher.EnableRaisingEvents = true;
+            _watchers.Add(watcher);
+        }
     }
 
     public void Dispose()
     {
-        _watcher?.Dispose();
+        foreach (var watcher in _watchers)
+            watcher.Dispose();
         _watchTimer?.Dispose();
     }
 
@@ -57,7 +65,7 @@ internal sealed class ModuleHost(string modulesDirectory, Func<IHandyModule, IMo
         _watchTimer?.Change(WatchDelay, Timeout.InfiniteTimeSpan);
 
     /// <summary><c>Modules/&lt;Name&gt;/&lt;Name&gt;.dll</c> and the assemblies placed directly in the folder.</summary>
-    private IEnumerable<string> FindModuleAssemblies()
+    private static IEnumerable<string> FindModuleAssemblies(string modulesDirectory)
     {
         var inFolders = Directory.EnumerateDirectories(modulesDirectory)
             .Select(directory => Path.Combine(directory, Path.GetFileName(directory) + ".dll"))

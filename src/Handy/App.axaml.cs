@@ -15,7 +15,9 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var services = AppServices.Create(AppPaths.ConfigDirectory, AppPaths.ModulesDirectory);
+            var services = AppServices.Create(AppPaths.ConfigDirectory,
+                [AppPaths.UserModulesDirectory, AppPaths.BundledModulesDirectory]);
+            services.Installer.ApplyPendingChanges();
             services.Modules.LoadNewModules();
             services.Modules.StartWatching();
             desktop.MainWindow = new MainWindow { DataContext = new MainWindowViewModel(services) };

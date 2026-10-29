@@ -39,7 +39,7 @@ internal sealed partial class MainWindowViewModel : ObservableObject
     public string ModulesDirectory => _services.Modules.ModulesDirectory;
 
     public SettingsViewModel CreateSettings() =>
-        new(_services.Localization, _services.Modules.Modules);
+        new(_services.Localization, _services.Modules.Modules, new ModuleManagerViewModel(_services));
 
     [RelayCommand]
     private void OpenSettings()

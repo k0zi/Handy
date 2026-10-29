@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:h="clr-namespace:Handy"
+             xmlns:vm="clr-namespace:Handy.ViewModels"
+             x:Class="Handy.Views.ModuleManagerView"
+             x:DataType="vm:ModuleManagerViewModel">
+  <ScrollViewer Margin="0,12,0,0">
+    <StackPanel Spacing="8" Margin="0,0,12,0">
+      <TextBlock TextWrapping="Wrap" Foreground="{DynamicResource RiceForegroundMutedBrush}"
+                 Text="{Binding [ModuleTrustWarning], Source={x:Static h:L.Instance}}" />
+
+      <!-- Sources -->
+      <TextBlock Margin="0,8,0,0" FontWeight="SemiBold" Text="{Binding [ModuleSources], Source={x:Static h:L.Instance}}" />
+      <ItemsControl Name="SourceList" ItemsSource="{Binding Sources}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:ModuleSourceItemViewModel">
+            <DockPanel Margin="0,2">
+              <Button DockPanel.Dock="Right" Command="{Binding RemoveCommand}"
+                      Content="{Binding [RemoveModuleSource], Source={x:Static h:L.Instance}}" />
+              <SelectableTextBlock VerticalAlignment="Center" Text="{Binding Location}" />
+            </DockPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <DockPanel>
+        <Button Name="AddSourceButton" DockPanel.Dock="Right" Margin="8,0,0,0" Command="{Binding AddSourceCommand}"
+                Content="{Binding [AddModuleSource], Source={x:Static h:L.Instance}}" />
+        <TextBox Name="NewSourceBox" Text="{Binding NewSource}"
+                 PlaceholderText="{Binding [ModuleSourceHint], Source={x:Static h:L.Instance}}" />
+      </DockPanel>
+
+      <!-- Search -->
+      <TextBlock Margin="0,8,0,0" FontWeight="SemiBold" Text="{Binding [AvailableModules], Source={x:Static h:L.Instance}}" />
+      <DockPanel>
+        <Button Name="SearchButton" DockPanel.Dock="Right" Margin="8,0,0,0"
+                Command="{Binding SearchCommand}"
+                Content="{Binding [SearchModules], Source={x:Static h:L.Instance}}" />
+        <TextBox Name="QueryBox" Text="{Binding Query}"
+                 PlaceholderText="{Binding [SearchModulesHint], Source={x:Static h:L.Instance}}" />
+      </DockPanel>
+      <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
+      <TextBlock Name="StatusText" TextWrapping="Wrap" Text="{Binding Status}"
+                 IsVisible="{Binding Status, Converter={x:Static ObjectConverters.IsNotNull}}" />
+      <ItemsControl Name="PackageList" ItemsSource="{Binding Packages}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:ModulePackageItemViewModel">
+            <DockPanel Margin="0,4">
+              <Panel DockPanel.Dock="Right" VerticalAlignment="Center" Margin="8,0,0,0">
+                <Button Classes="accent" IsVisible="{Binding CanInstall}" Command="{Binding InstallCommand}"
+                        Content="{Binding [InstallModule], Source={x:Static h:L.Instance}}" />
+                <Button IsVisible="{Binding CanUpdate}" Command="{Binding InstallCommand}"
+                        Content="{Binding [UpdateModule], Source={x:Static h:L.Instance}}" />
+                <TextBlock IsVisible="{Binding IsUpToDate}" Foreground="{DynamicResource RiceForegroundMutedBrush}"
+                           Text="{Binding [ModuleUpToDate], Source={x:Static h:L.Instance}}" />
+                <TextBlock IsVisible="{Binding IsRestartRequired}" Foreground="{DynamicResource RiceForegroundMutedBrush}"
+                           Text="{Binding [RestartRequired], Source={x:Static h:L.Instance}}" />
+              </Panel>
+              <StackPanel>
+                <TextBlock FontWeight="SemiBold">
+                  <Run Text="{Binding Package.DisplayTitle}" />
+                  <Run Foreground="{DynamicResource RiceForegroundMutedBrush}" Text="{Binding Package.Version}" />
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="{Binding Package.Description}"
+                           IsVisible="{Binding Package.Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                <TextBlock Foreground="{DynamicResource RiceForegroundMutedBrush}" Text="{Binding Package.Authors}"
+                           IsVisible="{Binding Package.Authors, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              </StackPanel>
+            </DockPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <!-- Installed -->
+      <TextBlock Margin="0,8,0,0" FontWeight="SemiBold" Text="{Binding [InstalledModules], Source={x:Static h:L.Instance}}" />
+      <TextBlock Foreground="{DynamicResource RiceForegroundMutedBrush}" IsVisible="{Binding !Installed.Count}"
+                 Text="{Binding [NoInstalledModules], Source={x:Static h:L.Instance}}" />
+      <ItemsControl Name="InstalledList" ItemsSource="{Binding Installed}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:InstalledModuleItemViewModel">
+            <DockPanel Margin="0,2">
+              <Button DockPanel.Dock="Right" Margin="8,0,0,0" Command="{Binding UninstallCommand}"
+                      Content="{Binding [UninstallModule], Source={x:Static h:L.Instance}}" />
+              <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="8,0,0,0"
+                         Foreground="{DynamicResource RiceForegroundMutedBrush}" IsVisible="{Binding Module.IsRestartRequired}"
+                         Text="{Binding [RestartRequired], Source={x:Static h:L.Instance}}" />
+              <StackPanel VerticalAlignment="Center">
+                <TextBlock>
+                  <Run FontWeight="SemiBold" Text="{Binding Module.Id}" />
+                  <Run Foreground="{DynamicResource RiceForegroundMutedBrush}" Text="{Binding Version}" />
+                </TextBlock>
+                <TextBlock Foreground="{DynamicResource RiceForegroundMutedBrush}" Text="{Binding Module.Source}" />
+              </StackPanel>
+            </DockPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
